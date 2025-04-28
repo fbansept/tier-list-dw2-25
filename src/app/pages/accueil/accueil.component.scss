@@ -82,6 +82,17 @@
           &.bouton-moins {
             bottom: 5px;
           }
+
+          &.bouton-supprime {
+            left: 5px;
+            bottom: 5px;
+            background-color: red;
+
+            &:hover {
+              background-color: rgb(160, 0, 0);
+            }
+
+          }
         }
       }
     }

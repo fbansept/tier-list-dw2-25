@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+type Categorie = {
+  titre: string;
+  images: string[];
+};
+
 @Component({
   selector: 'app-accueil',
   imports: [FormsModule],
@@ -9,39 +14,76 @@ import { FormsModule } from '@angular/forms';
 })
 export class AccueilComponent {
   urlSaisie = '';
+  nomCategorieSaisie = '';
 
-  listeCategorie = [
-    {
-      titre: 'S',
-      images: [
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNBt8KutuFKY80alLnA2fsk4HgqOUdrVkDCQ&s',
-        'https://www.vsveicolispeciali.com/wp-content/uploads/2024/01/pastel-de-belem-pasteis-de-nata-street-food.jpg',
-      ],
-    },
-    { titre: 'A', images: [] },
-    {
-      titre: 'B',
-      images: [
-        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2b/89/38/29/fala-burger.jpg?w=600&h=400&s=1',
-      ],
-    },
-    { titre: 'C', images: [] },
-  ];
+  listeCategorie: Categorie[] = [];
+
+  ngOnInit() {
+    //on tente de recuperer une eventuelle sauvegarde
+    const listeCategorieSauvegarde = localStorage.getItem('listeCategorie');
+
+    //si c'est la première fois que l'on arrive sur l'app
+    if (listeCategorieSauvegarde == null) {
+      //on définit des catégories par défaut
+      this.listeCategorie = [
+        { titre: 'S', images: [] },
+        { titre: 'A', images: [] },
+        { titre: 'B', images: [] },
+        { titre: 'C', images: [] },
+      ];
+
+      this.sauvegarde();
+    } else {
+      //on transforme la liste de catégorie du localstorage en objet javascript,
+      //et on l'affecte à listeCategorie
+      this.listeCategorie = JSON.parse(listeCategorieSauvegarde);
+    }
+  }
+
+  sauvegarde() {
+    //on transforme ces catégories en JSON
+    const jsonListeCategorieParDefaut = JSON.stringify(this.listeCategorie);
+
+    //On sauvegarde le JSON dans le localstorage à la clé "listeCategorie"
+    localStorage.setItem('listeCategorie', jsonListeCategorieParDefaut);
+  }
 
   onAjoutImage() {
     this.listeCategorie[0].images.push(this.urlSaisie);
     this.urlSaisie = '';
+    this.sauvegarde();
   }
 
-  onClicDeplacementImage(indexCategorie: number, indexImage: number, direction : "haut" | "bas" = "haut") {
+  onAjoutCategorie() {
+    this.listeCategorie.push({ titre: this.nomCategorieSaisie, images: [] });
+    this.nomCategorieSaisie = '';
+    this.sauvegarde();
+  }
+
+  onClicDeplacementImage(
+    indexCategorie: number,
+    indexImage: number,
+    direction: 'haut' | 'bas' = 'haut',
+  ) {
     //on recupere l'url de l'image cliquée
     const urlImageAcopier =
       this.listeCategorie[indexCategorie].images[indexImage];
 
     //on copie l'url dans la categorie suivante
-    this.listeCategorie[indexCategorie + (direction == "haut" ? -1 : 1)].images.push(urlImageAcopier);
+    this.listeCategorie[
+      indexCategorie + (direction == 'haut' ? -1 : 1)
+    ].images.push(urlImageAcopier);
 
-    //on supprime l'image d'origine
+    //on supprime l'image d'origine/)à
     this.listeCategorie[indexCategorie].images.splice(indexImage, 1);
+
+    this.sauvegarde();
+  }
+
+  onClicSupprimeImage(indexCategorie: number, indexImage: number) {
+    //on supprime l'image
+    this.listeCategorie[indexCategorie].images.splice(indexImage, 1);
+
+    this.sauvegarde();
   }
 }
