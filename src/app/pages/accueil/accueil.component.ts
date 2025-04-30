@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CategorieComponent } from "../../composants/categorie/categorie.component";
 
 type Categorie = {
   titre: string;
@@ -8,7 +9,7 @@ type Categorie = {
 
 @Component({
   selector: 'app-accueil',
-  imports: [FormsModule],
+  imports: [FormsModule, CategorieComponent],
   templateUrl: './accueil.component.html',
   styleUrl: './accueil.component.scss',
 })
@@ -55,7 +56,7 @@ export class AccueilComponent {
   }
 
   onAjoutCategorie() {
-    this.listeCategorie.push({ titre: this.nomCategorieSaisie, images: [] });
+    this.listeCategorie.push({titre : this.nomCategorieSaisie, images: []});
     this.nomCategorieSaisie = '';
     this.sauvegarde();
   }
