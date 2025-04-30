@@ -1,40 +1,42 @@
-<div class="categorie">
-  <div class="en-tete">
-    <span>{{ categorie.titre }}</span>
-  </div>
-  <div class="images">
-    @for (
-      image of categorie.images;
-      track indexImage;
-      let indexImage = $index
-    ) {
-      <div class="image">
-        <img src="{{ image }}" />
+@if (categorie) {
+  <div class="categorie">
+    <div class="en-tete">
+      <span>{{ categorie.titre }}</span>
+    </div>
+    <div class="images">
+      @for (
+        image of categorie.images;
+        track indexImage;
+        let indexImage = $index
+      ) {
+        <div class="image">
+          <img src="{{ image }}" />
 
-        @if (indexCategorie != 0) {
-          <div
-            class="bouton bouton-plus"
-            (click)="onClicDeplacementImage(indexCategorie, indexImage)"
-          >
-            +
-          </div>
-        }
-        @if (indexCategorie != listeCategorie.length - 1) {
-          <div
-            class="bouton bouton-moins"
-            (click)="onClicDeplacementImage(indexCategorie, indexImage, 'bas')"
-          >
-            -
-          </div>
-        }
+          @if (afficheBoutonPlus) {
+            <div
+              class="bouton bouton-plus"
+              (click)="onClicDeplacementImage(indexImage)"
+            >
+              +
+            </div>
+          }
+          @if (afficheBoutonMoins) {
+            <div
+              class="bouton bouton-moins"
+              (click)="onClicDeplacementImage(indexImage, 'bas')"
+            >
+              -
+            </div>
+          }
 
-        <div
-          class="bouton bouton-supprime"
-          (click)="onClicSupprimeImage(indexCategorie, indexImage)"
-        >
-          x
+          <div
+            class="bouton bouton-supprime"
+            (click)="onClicSupprimeImage(indexImage)"
+          >
+            x
+          </div>
         </div>
-      </div>
-    }
+      }
+    </div>
   </div>
-</div>
+}

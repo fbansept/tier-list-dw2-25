@@ -14,49 +14,18 @@
     track indexCategorie;
     let indexCategorie = $index
   ) {
-    <div class="categorie">
-      <div class="en-tete">
-        <span>{{ categorie.titre }}</span>
-      </div>
-      <div class="images">
-        @for (
-          image of categorie.images;
-          track indexImage;
-          let indexImage = $index
-        ) {
-          <div class="image">
-            <img src="{{ image }}" />
-
-            @if (indexCategorie != 0) {
-              <div
-                class="bouton bouton-plus"
-                (click)="onClicDeplacementImage(indexCategorie, indexImage)"
-              >
-                +
-              </div>
-            }
-            @if (indexCategorie != listeCategorie.length - 1) {
-              <div
-                class="bouton bouton-moins"
-                (click)="
-                  onClicDeplacementImage(indexCategorie, indexImage, 'bas')
-                "
-              >
-                -
-              </div>
-            }
-
-            <div
-              class="bouton bouton-supprime"
-              (click)="
-                onClicSupprimeImage(indexCategorie, indexImage)
-              "
-            >
-              x
-            </div>
-          </div>
-        }
-      </div>
-    </div>
+    <app-categorie
+      [categorie]="categorie"
+      [afficheBoutonPlus]="indexCategorie != 0"
+      [afficheBoutonMoins]="indexCategorie != listeCategorie.length - 1"
+      (clickSuppressionImage)="onClicSupprimeImage(indexCategorie, $event)"
+      (clickDeplacerImage)="
+        onClicDeplacementImage(
+          indexCategorie,
+          $event.indexImage,
+          $event.direction
+        )
+      "
+    ></app-categorie>
   }
 </div>

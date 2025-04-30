@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CategorieComponent } from "../../composants/categorie/categorie.component";
 
-type Categorie = {
-  titre: string;
-  images: string[];
-};
+
 
 @Component({
   selector: 'app-accueil',
